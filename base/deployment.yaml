@@ -23,7 +23,10 @@ spec:
           name: http
         env:
         - name: DATABASE_HOST
-          value: "postgres"
+          valueFrom:
+            configMapKeyRef:
+              name: url-shortener-config
+              key: database_host
         - name: DATABASE_NAME
           value: "urldb"
         - name: DATABASE_USER
@@ -34,7 +37,10 @@ spec:
               name: postgres-secret
               key: password
         - name: REDIS_HOST
-          value: "redis"
+          valueFrom:
+            configMapKeyRef:
+              name: url-shortener-config
+              key: redis_host
         - name: REDIS_PORT
           value: "6379"
         resources:

@@ -5,4 +5,6 @@ metadata:
   labels:
     app: url-shortener
 data:
+  database_host: "postgres"
+  redis_host: "redis"
   database_url: "postgresql://user:password@postgres:5432/urldb"

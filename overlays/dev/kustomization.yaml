@@ -17,7 +17,9 @@ patchesStrategicMerge:
 configMapGenerator:
 - behavior: merge
   literals:
-  - database_url="postgresql://user:password@postgres-dev:5432/urldb"
+  - database_host=dev-postgres
+  - redis_host=dev-redis
+  - database_url="postgresql://user:password@dev-postgres:5432/urldb"
   name: url-shortener-config
 resources:
 - ../../base
