@@ -22,11 +22,21 @@ spec:
         - containerPort: 8080
           name: http
         env:
-        - name: DATABASE_URL
+        - name: DATABASE_HOST
+          value: "postgres"
+        - name: DATABASE_NAME
+          value: "urldb"
+        - name: DATABASE_USER
+          value: "urluser"
+        - name: DATABASE_PASSWORD
           valueFrom:
-            configMapKeyRef:
-              name: url-shortener-config
-              key: database_url
+            secretKeyRef:
+              name: postgres-secret
+              key: password
+        - name: REDIS_HOST
+          value: "redis"
+        - name: REDIS_PORT
+          value: "6379"
         resources:
           requests:
             memory: "128Mi"
