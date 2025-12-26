@@ -27,10 +27,21 @@ spec:
             configMapKeyRef:
               name: url-shortener-config
               key: database_host
+        - name: DATABASE_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: url-shortener-config
+              key: database_port
         - name: DATABASE_NAME
-          value: "urldb"
+          valueFrom:
+            configMapKeyRef:
+              name: url-shortener-config
+              key: database_name
         - name: DATABASE_USER
-          value: "urluser"
+          valueFrom:
+            configMapKeyRef:
+              name: url-shortener-config
+              key: database_user
         - name: DATABASE_PASSWORD
           valueFrom:
             secretKeyRef:
@@ -42,7 +53,10 @@ spec:
               name: url-shortener-config
               key: redis_host
         - name: REDIS_PORT
-          value: "6379"
+          valueFrom:
+            configMapKeyRef:
+              name: url-shortener-config
+              key: redis_port
         resources:
           requests:
             memory: "128Mi"

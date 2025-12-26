@@ -52,6 +52,8 @@ spec:
             secretKeyRef:
               name: postgres-secret
               key: password
+        - name: POSTGRES_INITDB_ARGS
+          value: "--auth=md5"
         volumeMounts:
         - name: postgres-storage
           mountPath: /var/lib/postgresql/data
