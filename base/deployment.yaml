@@ -18,7 +18,7 @@ spec:
       # Wait for PostgreSQL to be ready
       - name: wait-for-postgres
         image: postgres:15-alpine
-        command: ['sh', '-c', 'until pg_isready -h postgres -U urluser; do sleep 1; done']
+        command: ['sh', '-c', 'until pg_isready -h postgres; do sleep 1; done']
 
       # Initialize database schema
       - name: db-schema-init
