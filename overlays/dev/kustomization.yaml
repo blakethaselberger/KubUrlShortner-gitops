@@ -26,4 +26,4 @@ resources:
 images:
 - name: url-shortener
   newName: 211125541816.dkr.ecr.us-west-2.amazonaws.com/url-shortener
-  newTag: 484de85a8da0b52ba30893869dc2ff8884f3295a
+  newTag: f6638d972ccb242e4a8036e43ad13f1158fa4899
