@@ -26,7 +26,6 @@ spec:
     metadata:
       labels:
         app: redis
-        component: cache
     spec:
       containers:
       - name: redis
