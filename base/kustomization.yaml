@@ -9,6 +9,7 @@ resources:
   - configmap.yaml
   - postgres.yaml
   - redis.yaml
+  - ingress.yaml
 
 secretGenerator:
   - name: postgres-secret

@@ -1,0 +1,93 @@
+# ============================================================================
+# Kubernetes Ingress Resource for URL Shortener
+# ============================================================================
+# This resource tells the AWS Load Balancer Controller:
+# "Create an AWS ALB that routes traffic to my service"
+#
+# The controller (installed by Terraform) watches for this resource and
+# automatically creates a real AWS ALB with all the configuration needed.
+# ============================================================================
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: url-shortener
+  namespace: url-shortener
+  labels:
+    app: url-shortener
+    managed-by: argocd
+
+  # ========================================================================
+  # ANNOTATIONS: Configuration for AWS Load Balancer Controller
+  # ========================================================================
+  # These annotations tell the controller how to configure the ALB
+  annotations:
+    # Ingress class: tells Kubernetes which controller should handle this
+    # "alb" means: use AWS Load Balancer Controller (not nginx ingress, etc.)
+    kubernetes.io/ingress.class: alb
+
+    # ====================================================================
+    # ALB Configuration
+    # ====================================================================
+
+    # scheme: internet-facing = public ALB with internet IP
+    # scheme: internal = private ALB only accessible within VPC
+    alb.ingress.kubernetes.io/scheme: internet-facing
+
+    # target-type: ip = register pod IPs directly as targets
+    # (as opposed to: instance = register EC2 instances)
+    # We use 'ip' because Kubernetes manages pod IPs dynamically
+    alb.ingress.kubernetes.io/target-type: ip
+
+    # ====================================================================
+    # Health Check Configuration
+    # ====================================================================
+    # The ALB uses these to determine if pods are healthy
+
+    # Path the ALB checks to see if pod is healthy
+    # Our app has /health/ready endpoint that checks database connectivity
+    alb.ingress.kubernetes.io/healthcheck-path: /health/ready
+
+    # Time (seconds) between health checks
+    alb.ingress.kubernetes.io/healthcheck-interval-seconds: '15'
+
+    # Time (seconds) to wait for health check response before timeout
+    alb.ingress.kubernetes.io/healthcheck-timeout-seconds: '5'
+
+    # Number of successful health checks before marking pod as healthy
+    # 2 = pod must pass 2 checks in a row before getting traffic
+    alb.ingress.kubernetes.io/healthy-threshold-count: '2'
+
+    # Number of failed health checks before marking pod as unhealthy
+    # 2 = pod is removed from ALB after 2 failed checks
+    alb.ingress.kubernetes.io/unhealthy-threshold-count: '2'
+
+    # ====================================================================
+    # Tags for AWS Resource Management
+    # ====================================================================
+    # These tags appear on the ALB in AWS Console for organization
+    alb.ingress.kubernetes.io/tags: |
+      Name=url-shortener-alb,
+      Project=KubUrlShortner,
+      Environment=dev,
+      ManagedBy=Kubernetes
+
+spec:
+  # ========================================================================
+  # Rules: Where traffic should be routed
+  # ========================================================================
+  # If a request doesn't match any rule, it returns 404
+
+  rules:
+    # Rule 1: Root path (/)
+    # All requests to / go to the url-shortener service
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix  # Prefix = match /anything that starts with /
+            backend:
+              service:
+                name: dev-url-shortener     # Service name
+                port:
+                  number: 80                # Service port (80 because ClusterIP service)
+                                           # This forwards to pod port 8000 via Service
