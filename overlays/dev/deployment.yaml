@@ -6,6 +6,10 @@ spec:
   replicas: 1
   template:
     spec:
+      initContainers:
+      - name: wait-for-postgres
+        image: postgres:15-alpine
+        command: ['sh', '-c', 'until pg_isready -h dev-postgres; do sleep 1; done']
       containers:
       - name: url-shortener
         resources:
