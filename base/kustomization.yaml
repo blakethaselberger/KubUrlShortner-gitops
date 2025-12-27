@@ -19,5 +19,4 @@ secretGenerator:
       - password=urlshortenerpassword123
 
 commonLabels:
-  app: url-shortener
   managed-by: argocd
