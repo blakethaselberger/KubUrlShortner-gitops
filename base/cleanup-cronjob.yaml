@@ -1,0 +1,69 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: url-cleanup
+  labels:
+    app: url-shortener
+    component: cleanup
+spec:
+  # Run daily at 2:00 AM (good time for maintenance, low traffic)
+  schedule: "0 2 * * *"
+
+  # Don't run multiple jobs concurrently
+  concurrencyPolicy: Forbid
+
+  # Keep recent job history for debugging
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 1
+
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: url-shortener
+            component: cleanup
+        spec:
+          restartPolicy: OnFailure
+
+          containers:
+          - name: cleanup-worker
+            image: 211125541816.dkr.ecr.us-west-2.amazonaws.com/cleanup-worker:latest
+            imagePullPolicy: IfNotPresent
+
+            env:
+            # Database host
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: url-shortener-config
+                  key: database_host
+
+            # Database name from config
+            - name: DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: url-shortener-config
+                  key: database_name
+
+            # Database user from config
+            - name: DB_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: url-shortener-config
+                  key: database_user
+
+            # Database password from secret
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: password
+
+            resources:
+              requests:
+                memory: "128Mi"
+                cpu: "100m"
+              limits:
+                memory: "256Mi"
+                cpu: "200m"

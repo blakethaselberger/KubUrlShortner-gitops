@@ -14,6 +14,38 @@ spec:
       labels:
         app: url-shortener
     spec:
+      initContainers:
+      # Wait for PostgreSQL to be ready
+      - name: wait-for-postgres
+        image: postgres:15-alpine
+        command: ['sh', '-c', 'until pg_isready -h postgres -U urluser; do sleep 1; done']
+
+      # Initialize database schema
+      - name: db-schema-init
+        image: 211125541816.dkr.ecr.us-west-2.amazonaws.com/schema-init-worker:latest
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: DB_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: url-shortener-config
+              key: database_host
+        - name: POSTGRES_DB
+          valueFrom:
+            configMapKeyRef:
+              name: url-shortener-config
+              key: database_name
+        - name: POSTGRES_USER
+          valueFrom:
+            configMapKeyRef:
+              name: url-shortener-config
+              key: database_user
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: password
+
       containers:
       - name: url-shortener
         image: url-shortener:latest

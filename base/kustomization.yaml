@@ -10,6 +10,8 @@ resources:
   - postgres.yaml
   - redis.yaml
   - ingress.yaml
+  - analytics-cronjob.yaml
+  - cleanup-cronjob.yaml
 
 secretGenerator:
   - name: postgres-secret

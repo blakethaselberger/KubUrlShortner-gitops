@@ -1,0 +1,69 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: analytics-aggregation
+  labels:
+    app: url-shortener
+    component: analytics
+spec:
+  # Run hourly at the top of the hour (0:00, 1:00, 2:00, etc)
+  schedule: "0 * * * *"
+
+  # Don't run multiple jobs concurrently
+  concurrencyPolicy: Forbid
+
+  # Keep recent job history for debugging
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 1
+
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: url-shortener
+            component: analytics
+        spec:
+          restartPolicy: OnFailure
+
+          containers:
+          - name: analytics-worker
+            image: 211125541816.dkr.ecr.us-west-2.amazonaws.com/analytics-worker:latest
+            imagePullPolicy: IfNotPresent
+
+            env:
+            # Database host
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: url-shortener-config
+                  key: database_host
+
+            # Database name from config
+            - name: DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: url-shortener-config
+                  key: database_name
+
+            # Database user from config
+            - name: DB_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: url-shortener-config
+                  key: database_user
+
+            # Database password from secret
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: password
+
+            resources:
+              requests:
+                memory: "128Mi"
+                cpu: "100m"
+              limits:
+                memory: "256Mi"
+                cpu: "200m"
