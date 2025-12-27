@@ -80,14 +80,22 @@ spec:
 
   rules:
     # Rule 1: Root path (/)
-    # All requests to / go to the url-shortener service
+    # All requests to / go to the frontend service (React UI)
     - http:
         paths:
           - path: /
-            pathType: Prefix  # Prefix = match /anything that starts with /
+            pathType: Prefix
             backend:
               service:
-                name: dev-url-shortener     # Service name
+                name: url-shortener-frontend
                 port:
-                  number: 80                # Service port (80 because ClusterIP service)
-                                           # This forwards to pod port 8000 via Service
+                  number: 80
+          # Rule 2: API path (/api)
+          # All requests to /api/* go to the API backend service
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: dev-url-shortener
+                port:
+                  number: 80

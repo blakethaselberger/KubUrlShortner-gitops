@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: url-shortener-frontend
+  labels:
+    app: url-shortener
+    component: frontend
+spec:
+  type: ClusterIP
+  selector:
+    app: url-shortener
+    component: frontend
+  ports:
+  - port: 80
+    targetPort: 80
+    protocol: TCP
+    name: http

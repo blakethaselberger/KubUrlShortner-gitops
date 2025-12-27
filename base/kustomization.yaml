@@ -6,6 +6,8 @@ namespace: url-shortener
 resources:
   - deployment.yaml
   - service.yaml
+  - frontend-deployment.yaml
+  - frontend-service.yaml
   - configmap.yaml
   - postgres.yaml
   - redis.yaml
