@@ -24,6 +24,18 @@ configMapGenerator:
 resources:
 - ../../base
 images:
+- name: analytics-worker
+  newName: 211125541816.dkr.ecr.us-west-2.amazonaws.com/analytics-worker
+  newTag: ee28a82aa84043ca6866d2950312dc02c5fbd7f5
+- name: cleanup-worker
+  newName: 211125541816.dkr.ecr.us-west-2.amazonaws.com/cleanup-worker
+  newTag: ee28a82aa84043ca6866d2950312dc02c5fbd7f5
+- name: migrations-worker
+  newName: 211125541816.dkr.ecr.us-west-2.amazonaws.com/migrations-worker
+  newTag: ee28a82aa84043ca6866d2950312dc02c5fbd7f5
+- name: schema-init-worker
+  newName: 211125541816.dkr.ecr.us-west-2.amazonaws.com/schema-init-worker
+  newTag: ee28a82aa84043ca6866d2950312dc02c5fbd7f5
 - name: url-shortener
   newName: 211125541816.dkr.ecr.us-west-2.amazonaws.com/url-shortener
-  newTag: f6638d972ccb242e4a8036e43ad13f1158fa4899
+  newTag: ee28a82aa84043ca6866d2950312dc02c5fbd7f5
