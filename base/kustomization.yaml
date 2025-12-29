@@ -1,11 +1,7 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-namespace: url-shortener
-
 resources:
-  # Namespaces (Lab 6.1)
-  - namespaces.yaml
   # Core application resources
   - deployment.yaml
   - service.yaml
@@ -23,5 +19,7 @@ secretGenerator:
     literals:
       - password=urlshortenerpassword123
 
-commonLabels:
-  managed-by: argocd
+labels:
+  - includeSelectors: true
+    pairs:
+      managed-by: argocd
