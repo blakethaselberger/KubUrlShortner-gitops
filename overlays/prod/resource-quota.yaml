@@ -1,0 +1,63 @@
+---
+# ResourceQuota for Production Namespace
+# Prod gets more resources than dev
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: prod-quota
+  namespace: url-shortener-prod
+  labels:
+    environment: production
+    component: quotas
+    managed-by: argocd
+spec:
+  hard:
+    # CPU: All pods combined can REQUEST max 8 CPUs
+    requests.cpu: "8"
+    # CPU: All pods combined can USE max 16 CPUs
+    limits.cpu: "16"
+    # Memory: All pods combined can REQUEST max 16 GB
+    requests.memory: 16Gi
+    # Memory: All pods combined can USE max 32 GB
+    limits.memory: 32Gi
+    # Maximum number of pods in this namespace
+    pods: "50"
+    # Maximum number of services
+    services: "20"
+---
+# LimitRange for Production Namespace
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: prod-limits
+  namespace: url-shortener-prod
+  labels:
+    environment: production
+    component: limits
+    managed-by: argocd
+spec:
+  limits:
+  - type: Container
+    # Maximum resources a single container can use
+    max:
+      cpu: "2"
+      memory: 2Gi
+    # Minimum resources a single container must request
+    min:
+      cpu: 100m
+      memory: 128Mi
+    # Default resources if not specified in pod spec
+    default:
+      cpu: 500m
+      memory: 512Mi
+    # Default REQUEST resources if not specified
+    defaultRequest:
+      cpu: 250m
+      memory: 256Mi
+  - type: Pod
+    max:
+      cpu: "4"
+      memory: 4Gi
+    min:
+      cpu: 100m
+      memory: 128Mi

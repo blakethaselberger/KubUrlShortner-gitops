@@ -4,6 +4,9 @@ kind: Kustomization
 namespace: url-shortener
 
 resources:
+  # Namespaces (Lab 6.1)
+  - namespaces.yaml
+  # Core application resources
   - deployment.yaml
   - service.yaml
   - frontend-deployment.yaml

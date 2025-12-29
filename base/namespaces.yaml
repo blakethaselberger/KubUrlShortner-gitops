@@ -1,0 +1,18 @@
+---
+# Development Namespace
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: url-shortener-dev
+  labels:
+    environment: development
+    managed-by: argocd
+---
+# Production Namespace
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: url-shortener-prod
+  labels:
+    environment: production
+    managed-by: argocd

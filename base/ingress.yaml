@@ -39,6 +39,12 @@ metadata:
     # We use 'ip' because Kubernetes manages pod IPs dynamically
     alb.ingress.kubernetes.io/target-type: ip
 
+    # rewrite-target: Strip /api prefix before forwarding to backend
+    # So /api/health/alive becomes /health/alive
+    # This allows API routes to be served under /api/* in ALB while
+    # keeping them as /health/*, /shorten, etc. in the FastAPI app
+    alb.ingress.kubernetes.io/rewrite-target: /
+
     # ====================================================================
     # Health Check Configuration
     # ====================================================================

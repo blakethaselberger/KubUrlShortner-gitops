@@ -1,14 +1,13 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-
-namePrefix: dev-
+namePrefix: prod-
 
 commonLabels:
-  environment: dev
+  environment: prod
 
 replicas:
-- count: 1
+- count: 3
   name: url-shortener
 
 patchesStrategicMerge:
@@ -17,31 +16,34 @@ patchesStrategicMerge:
 configMapGenerator:
 - behavior: merge
   literals:
-  - database_host=dev-postgres
-  - redis_host=dev-redis
-  - database_url="postgresql://user:password@dev-postgres:5432/urldb"
+  - database_host=prod-postgres
+  - redis_host=prod-redis
+  - database_url="postgresql://user:password@prod-postgres:5432/urldb"
   name: url-shortener-config
 
 resources:
 - ../../base
-# Lab 6.1 - Resource quotas for dev
+# Lab 6.1 - Resource quotas for prod
 - resource-quota.yaml
+
+# Image tags - Updated by CI/CD pipeline after tests pass in dev
+# These MUST match dev tags after promotion
 images:
 - name: analytics-worker
   newName: 211125541816.dkr.ecr.us-west-2.amazonaws.com/analytics-worker
-  newTag: ce534cc963053fa57ee2a98cf9abebedb1aa9232
+  newTag: 75c27b517c486606ef7ffce07f4173283b2a33b4
 - name: cleanup-worker
   newName: 211125541816.dkr.ecr.us-west-2.amazonaws.com/cleanup-worker
-  newTag: ce534cc963053fa57ee2a98cf9abebedb1aa9232
+  newTag: 75c27b517c486606ef7ffce07f4173283b2a33b4
 - name: migrations-worker
   newName: 211125541816.dkr.ecr.us-west-2.amazonaws.com/migrations-worker
-  newTag: ce534cc963053fa57ee2a98cf9abebedb1aa9232
+  newTag: 75c27b517c486606ef7ffce07f4173283b2a33b4
 - name: schema-init-worker
   newName: 211125541816.dkr.ecr.us-west-2.amazonaws.com/schema-init-worker
-  newTag: ce534cc963053fa57ee2a98cf9abebedb1aa9232
+  newTag: 75c27b517c486606ef7ffce07f4173283b2a33b4
 - name: url-shortener
   newName: 211125541816.dkr.ecr.us-west-2.amazonaws.com/url-shortener
-  newTag: ce534cc963053fa57ee2a98cf9abebedb1aa9232
+  newTag: 75c27b517c486606ef7ffce07f4173283b2a33b4
 - name: url-shortener-frontend
   newName: 211125541816.dkr.ecr.us-west-2.amazonaws.com/url-shortener-frontend
-  newTag: ce534cc963053fa57ee2a98cf9abebedb1aa9232
+  newTag: 75c27b517c486606ef7ffce07f4173283b2a33b4

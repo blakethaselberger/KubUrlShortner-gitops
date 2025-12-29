@@ -1,0 +1,67 @@
+---
+# ResourceQuota for Development Namespace
+# This limits the total resources that ALL pods in the dev namespace can consume
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: dev-quota
+  namespace: url-shortener-dev
+  labels:
+    environment: development
+    component: quotas
+    managed-by: argocd
+spec:
+  # Hard limits for the entire namespace
+  hard:
+    # CPU: All pods combined can REQUEST max 2 CPUs
+    requests.cpu: "2"
+    # CPU: All pods combined can USE max 4 CPUs
+    limits.cpu: "4"
+    # Memory: All pods combined can REQUEST max 4 GB
+    requests.memory: 4Gi
+    # Memory: All pods combined can USE max 8 GB
+    limits.memory: 8Gi
+    # Maximum number of pods in this namespace
+    pods: "10"
+    # Maximum number of services
+    services: "5"
+---
+# LimitRange for Development Namespace
+# This sets min/max/default resource limits for INDIVIDUAL containers
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: dev-limits
+  namespace: url-shortener-dev
+  labels:
+    environment: development
+    component: limits
+    managed-by: argocd
+spec:
+  limits:
+  # Container-level limits
+  - type: Container
+    # Maximum resources a single container can use
+    max:
+      cpu: "1"
+      memory: 1Gi
+    # Minimum resources a single container must request
+    min:
+      cpu: 100m
+      memory: 128Mi
+    # Default resources if not specified in pod spec
+    default:
+      cpu: 500m
+      memory: 512Mi
+    # Default REQUEST resources if not specified
+    defaultRequest:
+      cpu: 250m
+      memory: 256Mi
+  # Pod-level limits
+  - type: Pod
+    max:
+      cpu: "2"
+      memory: 2Gi
+    min:
+      cpu: 100m
+      memory: 128Mi

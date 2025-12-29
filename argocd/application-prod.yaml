@@ -1,0 +1,40 @@
+---
+# Production ArgoCD Application
+# This application manages the production deployment from overlays/prod
+#
+# The key difference from dev:
+# - Points to overlays/prod (not overlays/dev)
+# - Same syncPolicy (automated, with pruning)
+# - Image tags are only updated after dev tests pass (via CI/CD)
+#
+# Setup: kubectl apply -f argocd/application-prod.yaml -n argocd
+#
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: url-shortener-prod
+  namespace: argocd
+spec:
+  # Destination cluster and namespace
+  destination:
+    namespace: url-shortener-prod
+    server: https://kubernetes.default.svc
+
+  # ArgoCD project (using default)
+  project: default
+
+  # Git source configuration
+  source:
+    path: overlays/prod
+    repoURL: https://github.com/blakethaselberger/KubUrlShortner-gitops.git
+    targetRevision: HEAD
+
+  # Sync policy - auto-sync enabled
+  # This means ArgoCD will automatically deploy when git changes
+  syncPolicy:
+    automated:
+      enabled: true
+      prune: true        # Delete resources if removed from git
+      selfHeal: true     # Revert manual changes
+    syncOptions:
+    - CreateNamespace=true  # Create url-shortener-prod namespace if it doesn't exist
