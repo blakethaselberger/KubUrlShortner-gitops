@@ -22,26 +22,26 @@ configMapGenerator:
   - database_url="postgresql://user:password@dev-postgres:5432/urldb"
   name: url-shortener-config
 
+# Lab 6.1 - Resource quotas for dev
 resources:
 - ../../base
-# Lab 6.1 - Resource quotas for dev
 - resource-quota.yaml
 images:
 - name: analytics-worker
   newName: 211125541816.dkr.ecr.us-west-2.amazonaws.com/analytics-worker
-  newTag: ce534cc963053fa57ee2a98cf9abebedb1aa9232
+  newTag: f104a4ec22dbf1c30441856545ffc360946ae6aa
 - name: cleanup-worker
   newName: 211125541816.dkr.ecr.us-west-2.amazonaws.com/cleanup-worker
-  newTag: ce534cc963053fa57ee2a98cf9abebedb1aa9232
+  newTag: f104a4ec22dbf1c30441856545ffc360946ae6aa
 - name: migrations-worker
   newName: 211125541816.dkr.ecr.us-west-2.amazonaws.com/migrations-worker
-  newTag: ce534cc963053fa57ee2a98cf9abebedb1aa9232
+  newTag: f104a4ec22dbf1c30441856545ffc360946ae6aa
 - name: schema-init-worker
   newName: 211125541816.dkr.ecr.us-west-2.amazonaws.com/schema-init-worker
-  newTag: ce534cc963053fa57ee2a98cf9abebedb1aa9232
+  newTag: f104a4ec22dbf1c30441856545ffc360946ae6aa
 - name: url-shortener
   newName: 211125541816.dkr.ecr.us-west-2.amazonaws.com/url-shortener
-  newTag: ce534cc963053fa57ee2a98cf9abebedb1aa9232
+  newTag: f104a4ec22dbf1c30441856545ffc360946ae6aa
 - name: url-shortener-frontend
   newName: 211125541816.dkr.ecr.us-west-2.amazonaws.com/url-shortener-frontend
-  newTag: ce534cc963053fa57ee2a98cf9abebedb1aa9232
+  newTag: f104a4ec22dbf1c30441856545ffc360946ae6aa
