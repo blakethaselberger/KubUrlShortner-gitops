@@ -29,19 +29,19 @@ resources:
 images:
 - name: analytics-worker
   newName: 211125541816.dkr.ecr.us-west-2.amazonaws.com/analytics-worker
-  newTag: f104a4ec22dbf1c30441856545ffc360946ae6aa
+  newTag: 945c8bbd12ab403327be89c28ff63e9ac709e4fc
 - name: cleanup-worker
   newName: 211125541816.dkr.ecr.us-west-2.amazonaws.com/cleanup-worker
-  newTag: f104a4ec22dbf1c30441856545ffc360946ae6aa
+  newTag: 945c8bbd12ab403327be89c28ff63e9ac709e4fc
 - name: migrations-worker
   newName: 211125541816.dkr.ecr.us-west-2.amazonaws.com/migrations-worker
-  newTag: f104a4ec22dbf1c30441856545ffc360946ae6aa
+  newTag: 945c8bbd12ab403327be89c28ff63e9ac709e4fc
 - name: schema-init-worker
   newName: 211125541816.dkr.ecr.us-west-2.amazonaws.com/schema-init-worker
-  newTag: f104a4ec22dbf1c30441856545ffc360946ae6aa
+  newTag: 945c8bbd12ab403327be89c28ff63e9ac709e4fc
 - name: url-shortener
   newName: 211125541816.dkr.ecr.us-west-2.amazonaws.com/url-shortener
-  newTag: f104a4ec22dbf1c30441856545ffc360946ae6aa
+  newTag: 945c8bbd12ab403327be89c28ff63e9ac709e4fc
 - name: url-shortener-frontend
   newName: 211125541816.dkr.ecr.us-west-2.amazonaws.com/url-shortener-frontend
-  newTag: f104a4ec22dbf1c30441856545ffc360946ae6aa
+  newTag: 945c8bbd12ab403327be89c28ff63e9ac709e4fc
