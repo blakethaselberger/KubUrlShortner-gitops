@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: dev-url-shortener
+  labels:
+    environment: development
+    managed-by: argocd

@@ -34,6 +34,7 @@ configMapGenerator:
 
 # Lab 6.1 - Resource quotas for dev
 resources:
+- namespace.yaml
 - ../../base
 - resource-quota.yaml
 images:

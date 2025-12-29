@@ -4,8 +4,7 @@
 apiVersion: v1
 kind: ResourceQuota
 metadata:
-  name: dev-quota
-  namespace: url-shortener-dev
+  name: quota
   labels:
     environment: development
     component: quotas
@@ -31,8 +30,7 @@ spec:
 apiVersion: v1
 kind: LimitRange
 metadata:
-  name: dev-limits
-  namespace: url-shortener-dev
+  name: limits
   labels:
     environment: development
     component: limits

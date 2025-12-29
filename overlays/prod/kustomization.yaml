@@ -33,6 +33,7 @@ configMapGenerator:
   name: url-shortener-config
 
 resources:
+- namespace.yaml
 - ../../base
 # Lab 6.1 - Resource quotas for prod
 - resource-quota.yaml
