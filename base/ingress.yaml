@@ -39,20 +39,15 @@ metadata:
     # We use 'ip' because Kubernetes manages pod IPs dynamically
     alb.ingress.kubernetes.io/target-type: ip
 
-    # rewrite-target: Strip /api prefix before forwarding to backend
-    # So /api/health/alive becomes /health/alive
-    # This allows API routes to be served under /api/* in ALB while
-    # keeping them as /health/*, /shorten, etc. in the FastAPI app
-    alb.ingress.kubernetes.io/rewrite-target: /
-
     # ====================================================================
     # Health Check Configuration
     # ====================================================================
     # The ALB uses these to determine if pods are healthy
 
     # Path the ALB checks to see if pod is healthy
-    # Our app has /health/ready endpoint that checks database connectivity
-    alb.ingress.kubernetes.io/healthcheck-path: /health/ready
+    # Since /api/* routes to the API backend, the full path /api/health/ready
+    # is sent to the backend (ALB does not strip the /api prefix)
+    alb.ingress.kubernetes.io/healthcheck-path: /api/health/ready
 
     # Time (seconds) between health checks
     alb.ingress.kubernetes.io/healthcheck-interval-seconds: '15'
@@ -85,23 +80,25 @@ spec:
   # If a request doesn't match any rule, it returns 404
 
   rules:
-    # Rule 1: Root path (/)
-    # All requests to / go to the frontend service (React UI)
+    # Note: ALB evaluates paths in order. More specific paths must come FIRST
     - http:
         paths:
+          # Rule 1: API path (/api)
+          # All requests to /api/* go to the API backend service
+          # This MUST come before / to match more specific paths first
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: url-shortener
+                port:
+                  number: 80
+          # Rule 2: Root path (/)
+          # All requests to / go to the frontend service (React UI)
           - path: /
             pathType: Prefix
             backend:
               service:
                 name: url-shortener-frontend
-                port:
-                  number: 80
-          # Rule 2: API path (/api)
-          # All requests to /api/* go to the API backend service
-          - path: /api
-            pathType: Prefix
-            backend:
-              service:
-                name: dev-url-shortener
                 port:
                   number: 80

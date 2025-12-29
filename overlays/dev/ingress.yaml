@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: url-shortener
+spec:
+  rules:
+  - http:
+      paths:
+      # API path must come first to match before root path
+      - path: /api
+        pathType: Prefix
+        backend:
+          service:
+            name: dev-url-shortener
+            port:
+              number: 80
+      # Root path for frontend
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: dev-url-shortener-frontend
+            port:
+              number: 80

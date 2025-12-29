@@ -12,6 +12,7 @@ replicas:
 
 patchesStrategicMerge:
 - deployment.yaml
+- ingress.yaml
 
 configMapGenerator:
 - behavior: merge
