@@ -45,9 +45,9 @@ metadata:
     # The ALB uses these to determine if pods are healthy
 
     # Path the ALB checks to see if pod is healthy
-    # Since /api/* routes to the API backend, the full path /api/health/ready
-    # is sent to the backend (ALB does not strip the /api prefix)
-    alb.ingress.kubernetes.io/healthcheck-path: /api/health/ready
+    # The API serves health checks at /health/ready (not /api/health/ready)
+    # ALB will forward this path directly to the backend service
+    alb.ingress.kubernetes.io/healthcheck-path: /health/ready
 
     # Time (seconds) between health checks
     alb.ingress.kubernetes.io/healthcheck-interval-seconds: '15'
