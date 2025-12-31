@@ -12,16 +12,16 @@ metadata:
 spec:
   # Hard limits for the entire namespace
   hard:
-    # CPU: All pods combined can REQUEST max 2 CPUs
-    requests.cpu: "2"
-    # CPU: All pods combined can USE max 4 CPUs
-    limits.cpu: "4"
-    # Memory: All pods combined can REQUEST max 4 GB
-    requests.memory: 4Gi
-    # Memory: All pods combined can USE max 8 GB
-    limits.memory: 8Gi
-    # Maximum number of pods in this namespace
-    pods: "10"
+    # CPU: All pods combined can REQUEST max 1.8 CPUs (leaving 0.1 for system)
+    requests.cpu: "1800m"
+    # CPU: All pods combined can USE max 3.8 CPUs
+    limits.cpu: "3800m"
+    # Memory: All pods combined can REQUEST max 3 GB (leaving 0.4 for system)
+    requests.memory: 3Gi
+    # Memory: All pods combined can USE max 7.5 GB
+    limits.memory: "7500Mi"
+    # Maximum number of pods in this namespace (node supports 17)
+    pods: "16"
     # Maximum number of services
     services: "5"
 ---
@@ -41,25 +41,25 @@ spec:
   - type: Container
     # Maximum resources a single container can use
     max:
-      cpu: "1"
-      memory: 1Gi
+      cpu: "500m"
+      memory: 512Mi
     # Minimum resources a single container must request
     min:
-      cpu: 100m
-      memory: 128Mi
+      cpu: 10m
+      memory: 32Mi
     # Default resources if not specified in pod spec
     default:
-      cpu: 500m
-      memory: 512Mi
-    # Default REQUEST resources if not specified
+      cpu: 100m
+      memory: 128Mi
+    # Default REQUEST resources if not specified (what the scheduler sees)
     defaultRequest:
-      cpu: 250m
-      memory: 256Mi
+      cpu: 10m
+      memory: 32Mi
   # Pod-level limits
   - type: Pod
     max:
-      cpu: "2"
-      memory: 2Gi
+      cpu: "1"
+      memory: 1Gi
     min:
-      cpu: 100m
-      memory: 128Mi
+      cpu: 10m
+      memory: 32Mi
