@@ -6,9 +6,9 @@ namespace: dev-url-shortener
 namePrefix: dev-
 
 labels:
-  - includeSelectors: true
-    pairs:
-      environment: dev
+- includeSelectors: true
+  pairs:
+    environment: dev
 
 replicas:
 - count: 1
@@ -40,19 +40,19 @@ resources:
 images:
 - name: analytics-worker
   newName: 211125541816.dkr.ecr.us-west-2.amazonaws.com/analytics-worker
-  newTag: 945c8bbd12ab403327be89c28ff63e9ac709e4fc
+  newTag: f53680b219d2dc219371a00e2ca1da845995de9b
 - name: cleanup-worker
   newName: 211125541816.dkr.ecr.us-west-2.amazonaws.com/cleanup-worker
-  newTag: 945c8bbd12ab403327be89c28ff63e9ac709e4fc
+  newTag: f53680b219d2dc219371a00e2ca1da845995de9b
 - name: migrations-worker
   newName: 211125541816.dkr.ecr.us-west-2.amazonaws.com/migrations-worker
-  newTag: 945c8bbd12ab403327be89c28ff63e9ac709e4fc
+  newTag: f53680b219d2dc219371a00e2ca1da845995de9b
 - name: schema-init-worker
   newName: 211125541816.dkr.ecr.us-west-2.amazonaws.com/schema-init-worker
-  newTag: 945c8bbd12ab403327be89c28ff63e9ac709e4fc
+  newTag: f53680b219d2dc219371a00e2ca1da845995de9b
 - name: url-shortener
   newName: 211125541816.dkr.ecr.us-west-2.amazonaws.com/url-shortener
-  newTag: 945c8bbd12ab403327be89c28ff63e9ac709e4fc
+  newTag: f53680b219d2dc219371a00e2ca1da845995de9b
 - name: url-shortener-frontend
   newName: 211125541816.dkr.ecr.us-west-2.amazonaws.com/url-shortener-frontend
-  newTag: 945c8bbd12ab403327be89c28ff63e9ac709e4fc
+  newTag: f53680b219d2dc219371a00e2ca1da845995de9b
