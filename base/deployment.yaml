@@ -13,6 +13,7 @@ spec:
     metadata:
       labels:
         app: url-shortener
+        component: api
     spec:
       initContainers:
       # Initialize database schema
