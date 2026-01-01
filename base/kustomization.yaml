@@ -13,6 +13,7 @@ resources:
   - ingress.yaml
   - analytics-cronjob.yaml
   - cleanup-cronjob.yaml
+  - rbac-developer.yaml
 
 secretGenerator:
   - name: postgres-secret
